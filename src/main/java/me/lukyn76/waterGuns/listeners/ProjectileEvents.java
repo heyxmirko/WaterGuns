@@ -54,12 +54,17 @@ public class ProjectileEvents implements Listener {
 
         // Knockback
         if (entity instanceof LivingEntity) {
-            Vector knockbackVec = entity.getLocation().toVector()
-                    .subtract(shooter.getLocation().toVector())
-                    .normalize()
-                    .multiply(plugin.getConfigManager().getKnockback());
-            knockbackVec.setY(Math.max(knockbackVec.getY(), 0.2)); //minimum upward force
 
+
+            Vector direction = entity.getLocation().toVector().subtract(shooter.getLocation().toVector());
+            if (direction.lengthSquared() == 0) {
+                direction = new Vector(0, 1, 0);
+            } else {
+                direction.normalize();
+            }
+
+            Vector knockbackVec = direction.multiply(plugin.getConfigManager().getKnockback());
+            knockbackVec.setY(knockbackVec.getY() + 0.2); // min upward force
             entity.setVelocity(knockbackVec);
 
             // Damage
