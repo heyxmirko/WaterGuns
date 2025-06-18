@@ -1,0 +1,39 @@
+name: WaterGuns
+version: '1.0.0'
+main: me.lukyn76.waterGuns.WaterGuns
+api-version: '1.21'
+
+author: lukyn76
+description: An addictive water gun plugin with realistic mechanics and epic effects!
+
+commands:
+  watergun:
+    description: Get a water gun
+    usage: /watergun
+    permission: watergun.give
+
+  refill:
+    description: Refill your water gun
+    usage: /refill
+    permission: watergun.refill
+
+permissions:
+  watergun.*:
+    description: Access to all water gun features
+    default: op
+    children:
+      watergun.give: true
+      watergun.refill: true
+      watergun.use: true
+
+  watergun.give:
+    description: Get water guns
+    default: op
+
+  watergun.refill:
+    description: Refill water guns
+    default: true
+
+  watergun.use:
+    description: Use water guns
+    default: true

@@ -1,0 +1,58 @@
+# Water Gun Plugin Configuration
+# Make your water guns as addictive as possible!
+
+# Maximum ammo capacity for water guns
+max-ammo: 20
+
+# Cooldown between refills (in seconds)
+refill-cooldown-seconds: 3
+
+# Cooldown between individual shots (in milliseconds)
+shot-cooldown-ms: 150
+
+# Delay between shots in spray mode (in milliseconds)
+# Lower = faster firing, more addictive!
+spray-delay-ms: 100
+
+# Damage dealt by water gun (set to 0 to disable damage)
+damage: 1.0
+
+# Knockback strength (higher = more knockback)
+knockback: 0.5
+
+# Custom model data for your water gun model
+# Change this to match your resource pack
+custom-model-data: 1001
+
+# Enable PvP damage (set to false for pure fun mode)
+pvp-enabled: true
+
+# Display name for water guns (supports color codes with &)
+water-gun-name: "&b&l💧 Water Blaster 3000 &b&l💧"
+
+# Sound settings
+sounds:
+  enabled: true
+  volume: 1.0
+
+# Particle settings
+particles:
+  enabled: true
+  # Intensity multiplier for particle effects
+  intensity: 1.0
+  # Enable particle trails
+  trails: true
+
+# Advanced settings
+advanced:
+  # Maximum spray duration (in seconds) before auto-stop
+  max-spray-duration: 10
+
+  # Projectile speed multiplier
+  projectile-speed: 2.5
+
+  # Random spread for shots (0.0 = perfectly accurate, 0.1 = slight spread)
+  shot-spread: 0.1
+
+  # Refill detection radius (blocks)
+  water-detection-radius: 2
