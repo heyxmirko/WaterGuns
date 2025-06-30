@@ -53,7 +53,7 @@ public class ProjectileEvents implements Listener {
     private void handleEntityHit(Entity entity, Entity shooter, Location hitLoc) {
 
         // Knockback
-        if (entity instanceof LivingEntity) {
+        if (entity instanceof LivingEntity livingEntity) {
 
 
             Vector direction = entity.getLocation().toVector().subtract(shooter.getLocation().toVector());
@@ -68,13 +68,18 @@ public class ProjectileEvents implements Listener {
             entity.setVelocity(knockbackVec);
 
             // Damage
-            boolean isPvpEnabled = plugin.getConfigManager().isPvpEnabled();
-            if (isPvpEnabled && entity instanceof Player hitPlayer) {
-                LivingEntity target = (LivingEntity) entity;
-                target.damage(plugin.getConfigManager().getDamage(), shooter);
+            if (entity instanceof Player hitPlayer) {
 
-                hitPlayer.sendMessage(ChatColor.AQUA + "💦 You got splashed by " + shooter.getName() + "'s water gun! 💦");
-                hitPlayer.playSound(hitPlayer.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1.0f, 1.2f);
+                // player damage - only if PvP is enabled
+                boolean isPvpEnabled = plugin.getConfigManager().isPvpEnabled();
+                if (isPvpEnabled) {
+                    livingEntity.damage(plugin.getConfigManager().getDamage(), shooter);
+                    hitPlayer.sendMessage(ChatColor.AQUA + "💦 You got splashed by " + shooter.getName() + "'s water gun! 💦");
+                    hitPlayer.playSound(hitPlayer.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 1.0f, 1.2f);
+                }
+            } else {
+                // non-player living entities - always take damage
+                livingEntity.damage(plugin.getConfigManager().getDamage(), shooter);
             }
 
             entity.getWorld().spawnParticle(Particle.SPLASH, entity.getLocation().add(0, 1, 0), 30, 0.5, 0.8, 0.5, 0.4);
