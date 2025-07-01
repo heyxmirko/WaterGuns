@@ -7,10 +7,10 @@ author: lukyn76
 description: An addictive water gun plugin with realistic mechanics and epic effects!
 
 commands:
-  watergun:
-    description: Get a water gun
-    usage: /watergun
-    permission: watergun.give
+  waterguns:
+    description: Main command for WaterGuns plugin
+    usage: /<command> give
+    aliases: [ wg, watergun ]
 
   refill:
     description: Refill your water gun

@@ -22,13 +22,15 @@ knockback: 0.5
 
 # Custom model data for your water gun model
 # Change this to match your resource pack
-custom-model-data: 1001
+custom-model-data-red: 1001
+custom-model-data-blue: 1002
 
 # Enable PvP damage (set to false for pure fun mode)
 pvp-enabled: true
 
 # Display name for water guns (supports color codes with &)
-water-gun-name: "&b&l💧 Water Blaster 3000 &b&l💧"
+water-gun-name-red: "&r&lRed Water Blaster 3000"
+water-gun-name-blue: "&b&lBlue Water Blaster 3000"
 
 # Sound settings
 sounds:

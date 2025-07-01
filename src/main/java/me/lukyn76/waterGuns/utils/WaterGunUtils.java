@@ -16,7 +16,8 @@ public class WaterGunUtils {
 
         ItemMeta meta = item.getItemMeta();
         WaterGuns plugin = WaterGuns.getInstance();
-        return meta.hasCustomModelData() && meta.getCustomModelData() == plugin.getConfigManager().getCustomModelData();
+
+        return meta.hasCustomModelData() && (meta.getCustomModelData() == plugin.getConfigManager().getBlueCustomModelData() || meta.getCustomModelData() == plugin.getConfigManager().getRedCustomModelData());
     }
 
     public static boolean isHoldingWaterGun(Player player) {

@@ -2,6 +2,7 @@ package me.lukyn76.waterGuns;
 
 
 import me.lukyn76.waterGuns.commands.RefillCommand;
+import me.lukyn76.waterGuns.commands.TabComplete;
 import me.lukyn76.waterGuns.commands.WaterGunCommand;
 import me.lukyn76.waterGuns.listeners.PlayerEvents;
 import me.lukyn76.waterGuns.listeners.ProjectileEvents;
@@ -36,8 +37,9 @@ public final class WaterGuns extends JavaPlugin {
         // Register commands
         getCommand("watergun").setExecutor(new WaterGunCommand(this));
         getCommand("refill").setExecutor(new RefillCommand(this));
+        getCommand("waterguns").setTabCompleter(new TabComplete());
 
-        // Register events
+        // Register eventss
         getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);
         getServer().getPluginManager().registerEvents(new ProjectileEvents(this), this);
 

@@ -42,15 +42,22 @@ public class ConfigManager {
         return config.getDouble("knockback", 0.5);
     }
 
-    public int getCustomModelData() {
-        return config.getInt("custom-model-data", 1001);
+    public int getBlueCustomModelData() {
+        return config.getInt("custom-model-data-red", 1001);
+    }
+    public int getRedCustomModelData() {
+        return config.getInt("custom-model-data-blue", 1002);
     }
 
     public boolean isPvpEnabled() {
         return config.getBoolean("pvp-enabled", true);
     }
 
-    public String getWaterGunName() {
-        return config.getString("water-gun-name", "&b&l💧 Water Blaster 3000 💧");
+    public String getRedWaterGunName() {
+        return config.getString("water-gun-name-red", "&r&lRed Water Blaster 3000");
+    }
+
+    public String getBlueWaterGunName() {
+        return config.getString("water-gun-name-blue", "&b&lRed Water Blaster 3000");
     }
 }
