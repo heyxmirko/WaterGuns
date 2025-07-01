@@ -60,4 +60,8 @@ public class ConfigManager {
     public String getBlueWaterGunName() {
         return config.getString("water-gun-name-blue", "&b&lRed Water Blaster 3000");
     }
+
+    public int getRefillAmount() {
+        return config.getInt("refill-amount", 10);
+    }
 }

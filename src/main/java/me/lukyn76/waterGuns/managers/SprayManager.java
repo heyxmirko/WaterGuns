@@ -89,8 +89,8 @@ public class SprayManager {
         // Check ammo
         int ammo = WaterGuns.getInstance().getAmmoManager().getAmmo(waterGun);
         if (ammo <= 0) {
-            player.sendMessage(ChatColor.RED + "💧 Out of water! Refill needed! 💧");
-            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 0.5f);
+            player.sendMessage(ChatColor.RED + "💧 Out of water! Refill needed!");
+            player.playSound(player.getLocation(), Sound.BLOCK_DISPENSER_FAIL, 0.4f, 1.2f);
             stopSprayMode(player);
             return;
         }

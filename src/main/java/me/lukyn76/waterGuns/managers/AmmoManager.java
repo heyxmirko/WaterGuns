@@ -102,16 +102,28 @@ public class AmmoManager {
 
         ItemMeta meta = waterGun.getItemMeta();
         PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
-        dataContainer.set(ammoKey, PersistentDataType.INTEGER, maxAmmo);
+
+        int incrementAmmo = plugin.getConfigManager().getRefillAmount();
+        int currentAmmo = dataContainer.getOrDefault(ammoKey, PersistentDataType.INTEGER, 0);
+        int newAmmo = Math.min(currentAmmo + incrementAmmo, maxAmmo);
+
+        dataContainer.set(ammoKey, PersistentDataType.INTEGER, newAmmo);
 
         // Update lore
         String color = getColor(waterGun);
         updateAmmoLore(meta, maxAmmo, color);
         waterGun.setItemMeta(meta);
 
-        player.sendMessage(ChatColor.GREEN + "Your water gun has been refilled!");
         plugin.getBossBarManager().updateAmmoBossBar(player, waterGun);
-        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_POINTED_DRIPSTONE_DRIP_WATER_INTO_CAULDRON, 1.0f, 1.0f);
+
+        if (newAmmo >= maxAmmo) {
+            player.sendMessage(ChatColor.GREEN + "Your water gun is now fully loaded.");
+            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_INSIDE, 0.5f, 2f);
+            player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.5f, 1.2f);
+        } else {
+            player.sendMessage(ChatColor.AQUA + "+ " + incrementAmmo + " ammo to your water gun.");
+            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BUBBLE_COLUMN_UPWARDS_AMBIENT, 1.0f, 2.0f);
+        }
     }
 
     private void updateAmmoLore(ItemMeta meta, int currentAmmo, String color) {

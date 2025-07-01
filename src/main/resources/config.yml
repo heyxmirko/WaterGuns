@@ -7,6 +7,9 @@ max-ammo: 20
 # Cooldown between refills (in seconds)
 refill-cooldown-seconds: 3
 
+# Amount to refill the water tank by
+refill-amount: 10
+
 # Cooldown between individual shots (in milliseconds)
 shot-cooldown-ms: 150
 
