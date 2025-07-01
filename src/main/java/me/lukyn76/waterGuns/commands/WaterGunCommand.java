@@ -82,7 +82,8 @@ public class WaterGunCommand implements CommandExecutor {
         meta.setLore(Arrays.asList(
                 gunColor + "Right-click to shoot water!",
                 gunColor + "Hold right-click for spray mode!",
-                ChatColor.GRAY + "Sneak + Right-click near water to refill",
+                gunColor + "Sneak + Right-click near water to refill",
+                "",
                 ChatColor.YELLOW + "Ammo: " + maxAmmo + "/" + maxAmmo,
                 ChatColor.GRAY + "Color: " + gunColor + color.substring(0, 1).toUpperCase() + color.substring(1)
         ));

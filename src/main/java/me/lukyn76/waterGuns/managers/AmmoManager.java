@@ -138,6 +138,8 @@ public class AmmoManager {
         List<String> newLore = new ArrayList<>();
         newLore.add(gunColor + "Right-click to shoot water!");
         newLore.add(gunColor + "Hold right-click for spray mode!");
+        newLore.add(gunColor + "Sneak + Right-click near water to refill");
+        newLore.add("");
         newLore.add(ChatColor.YELLOW + "Ammo: " + currentAmmo + "/" + maxAmmo);
         newLore.add(ChatColor.GRAY + "Color: " + gunColor + color.substring(0, 1).toUpperCase() + color.substring(1));
 
