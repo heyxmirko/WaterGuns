@@ -9,6 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Snowball;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -48,7 +49,7 @@ public class SprayManager {
                     return;
                 }
 
-                shootWater(player);
+                shootWater(player, player.getItemInUse());
             }
         };
 
@@ -75,7 +76,7 @@ public class SprayManager {
         }
     }
 
-    public void shootWater(Player player) {
+    public void shootWater(Player player, ItemStack waterGun) {
         UUID playerId = player.getUniqueId();
 
         // Check cooldown
@@ -86,7 +87,7 @@ public class SprayManager {
         }
 
         // Check ammo
-        int ammo = WaterGuns.getInstance().getAmmoManager().getAmmo(player);
+        int ammo = WaterGuns.getInstance().getAmmoManager().getAmmo(waterGun);
         if (ammo <= 0) {
             player.sendMessage(ChatColor.RED + "💧 Out of water! Refill needed! 💧");
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 0.5f);
@@ -95,7 +96,7 @@ public class SprayManager {
         }
 
         // Consume ammo
-        WaterGuns.getInstance().getAmmoManager().consumeAmmo(player);
+        WaterGuns.getInstance().getAmmoManager().consumeAmmo(waterGun);
         lastShot.put(playerId, now);
 
         // Create water projectile
@@ -117,7 +118,7 @@ public class SprayManager {
         EffectUtils.playShootingEffect(player);
 
         // Update ammo display
-        WaterGuns.getInstance().getBossBarManager().updateAmmoBossBar(player);
+        WaterGuns.getInstance().getBossBarManager().updateAmmoBossBar(player, waterGun);
 
         // Trail particles
         EffectUtils.createWaterTrail(projectile);

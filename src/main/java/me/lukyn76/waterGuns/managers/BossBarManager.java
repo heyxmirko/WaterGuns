@@ -6,6 +6,7 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +21,7 @@ public class BossBarManager {
         this.plugin = plugin;
     }
 
-    public void showAmmoBossBar(Player player) {
+    public void showAmmoBossBar(Player player, ItemStack waterGun) {
         hideAmmoBossBar(player);
 
         BossBar bossBar = Bukkit.createBossBar(
@@ -31,7 +32,7 @@ public class BossBarManager {
 
         bossBar.addPlayer(player);
         playerBossBars.put(player.getUniqueId(), bossBar);
-        updateAmmoBossBar(player);
+        updateAmmoBossBar(player, waterGun);
     }
 
     public void hideAmmoBossBar(Player player) {
@@ -41,11 +42,11 @@ public class BossBarManager {
         }
     }
 
-    public void updateAmmoBossBar(Player player) {
+    public void updateAmmoBossBar(Player player, ItemStack waterGun) {
         BossBar bossBar = playerBossBars.get(player.getUniqueId());
         if (bossBar == null ) return;
 
-        int ammo = plugin.getAmmoManager().getAmmo(player);
+        int ammo = plugin.getAmmoManager().getAmmo(waterGun);
         int maxAmmo = plugin.getConfigManager().getMaxAmmo();
 
         double progress = Math.max(0.0, Math.min(1.0, (double) ammo / maxAmmo));

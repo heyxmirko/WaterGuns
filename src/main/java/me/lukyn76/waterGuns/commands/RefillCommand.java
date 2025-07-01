@@ -29,7 +29,7 @@ public class RefillCommand implements CommandExecutor {
             return true;
         }
 
-        plugin.getAmmoManager().refillAmmo(player);
+        plugin.getAmmoManager().refillAmmo(player, player.getInventory().getItemInMainHand());
         return true;
     }
 

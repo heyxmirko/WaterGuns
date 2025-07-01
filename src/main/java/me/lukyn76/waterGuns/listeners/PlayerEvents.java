@@ -2,6 +2,7 @@ package me.lukyn76.waterGuns.listeners;
 
 import me.lukyn76.waterGuns.WaterGuns;
 import me.lukyn76.waterGuns.utils.WaterGunUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,7 +35,7 @@ public class PlayerEvents implements Listener {
             event.setCancelled(true);
 
             if (player.isSneaking() && WaterGunUtils.isNearWater(player)) {
-                plugin.getAmmoManager().refillAmmo(player);
+                plugin.getAmmoManager().refillAmmo(player, item);
                 return;
             }
 
@@ -42,7 +43,7 @@ public class PlayerEvents implements Listener {
 
             // If not already in spray mode, shoot once and start spray detection
             if (!plugin.getSprayManager().getSprayMode().getOrDefault(playerId, false)) {
-                plugin.getSprayManager().shootWater(player);
+                plugin.getSprayManager().shootWater(player, item);
                 plugin.getSprayManager().startSprayDetection(player);
             }
         }
@@ -55,7 +56,7 @@ public class PlayerEvents implements Listener {
         ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
 
         if (WaterGunUtils.isWaterGun(newItem)) {
-            plugin.getBossBarManager().showAmmoBossBar(player);
+            plugin.getBossBarManager().showAmmoBossBar(player, newItem);
         } else {
             exitGunMode(player);
         }
@@ -84,7 +85,6 @@ public class PlayerEvents implements Listener {
     }
 
     private static void clearPlayerData(Player player) {
-        WaterGuns.getInstance().getAmmoManager().clearPlayerAmmoData(player);
         WaterGuns.getInstance().getSprayManager().clearPlayerHoldingData(player);
     }
 }

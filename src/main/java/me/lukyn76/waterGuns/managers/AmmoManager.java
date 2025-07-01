@@ -1,54 +1,139 @@
 package me.lukyn76.waterGuns.managers;
 
 import me.lukyn76.waterGuns.WaterGuns;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AmmoManager {
 
-    private final Map<UUID, Integer> playerAmmo = new ConcurrentHashMap<>();
+    private final WaterGuns plugin;
     private final int maxAmmo;
-
+    private final NamespacedKey ammoKey;
+    private final NamespacedKey colorKey;
 
     public AmmoManager(WaterGuns plugin) {
+        this.plugin = plugin;
         this.maxAmmo = plugin.getConfigManager().getMaxAmmo();
+        this.ammoKey = new NamespacedKey(plugin, "ammo");
+        this.colorKey = new NamespacedKey(plugin, "color");
     }
 
-    public void initializePlayer(Player player) {
-        playerAmmo.put(player.getUniqueId(), maxAmmo);
-    }
-
-    public void refillAmmo(Player player) {
-        playerAmmo.put(player.getUniqueId(), maxAmmo);
-        player.sendMessage("Your water gun has been refilled!");
-    }
-
-    public int getAmmo(Player player) {
-        return playerAmmo.getOrDefault(player.getUniqueId(), 0);
-    }
-
-    public void consumeAmmo(Player player) {
-        int ammo = getAmmo(player);
-        if (ammo > 0) {
-            playerAmmo.put(player.getUniqueId(), ammo - 1);
-        } else {
-            player.sendMessage("Out of ammo! Refill needed!");
+    public void initializeWaterGun(ItemStack waterGun, String color) {
+        if (waterGun == null || !waterGun.hasItemMeta()) {
+            return;
         }
+
+        ItemMeta meta = waterGun.getItemMeta();
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+
+        // Set initial ammo and color
+        dataContainer.set(ammoKey, PersistentDataType.INTEGER, maxAmmo);
+        dataContainer.set(colorKey, PersistentDataType.STRING, color);
+
+        // Update the lore to show current ammo
+        updateAmmoLore(meta, maxAmmo, color);
+        waterGun.setItemMeta(meta);
     }
 
-    public void displayAmmo(Player player) {
-        int ammo = getAmmo(player);
-        String message = "Ammo: " + ammo + "/" + maxAmmo;
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+    public boolean isWaterGun(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) {
+            return false;
+        }
+
+        PersistentDataContainer dataContainer = item.getItemMeta().getPersistentDataContainer();
+        return dataContainer.has(ammoKey, PersistentDataType.INTEGER);
     }
 
-    public void clearPlayerAmmoData(Player player) {
-        playerAmmo.remove(player.getUniqueId());
+    public int getAmmo(ItemStack waterGun) {
+        if (!isWaterGun(waterGun)) {
+            return 0;
+        }
+
+        PersistentDataContainer dataContainer = waterGun.getItemMeta().getPersistentDataContainer();
+        return dataContainer.getOrDefault(ammoKey, PersistentDataType.INTEGER, 0);
+    }
+
+    public String getColor(ItemStack waterGun) {
+        if (!isWaterGun(waterGun)) {
+            return "blue"; // default
+        }
+
+        PersistentDataContainer dataContainer = waterGun.getItemMeta().getPersistentDataContainer();
+        return dataContainer.getOrDefault(colorKey, PersistentDataType.STRING, "blue");
+    }
+
+    public boolean consumeAmmo(ItemStack waterGun) {
+        if (!isWaterGun(waterGun)) {
+            return false;
+        }
+
+        int currentAmmo = getAmmo(waterGun);
+        if (currentAmmo <= 0) {
+            return false;
+        }
+
+        // Decrease ammo by 1
+        ItemMeta meta = waterGun.getItemMeta();
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+        int newAmmo = currentAmmo - 1;
+        dataContainer.set(ammoKey, PersistentDataType.INTEGER, newAmmo);
+
+        // Update lore
+        String color = getColor(waterGun);
+        updateAmmoLore(meta, newAmmo, color);
+        waterGun.setItemMeta(meta);
+
+        return true;
+    }
+
+    public void refillAmmo(Player player, ItemStack waterGun) {
+        if (!isWaterGun(waterGun)) {
+            return;
+        }
+
+        ItemMeta meta = waterGun.getItemMeta();
+        PersistentDataContainer dataContainer = meta.getPersistentDataContainer();
+        dataContainer.set(ammoKey, PersistentDataType.INTEGER, maxAmmo);
+
+        // Update lore
+        String color = getColor(waterGun);
+        updateAmmoLore(meta, maxAmmo, color);
+        waterGun.setItemMeta(meta);
+
+        player.sendMessage(ChatColor.GREEN + "Your water gun has been refilled!");
+        plugin.getBossBarManager().updateAmmoBossBar(player, waterGun);
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_POINTED_DRIPSTONE_DRIP_WATER_INTO_CAULDRON, 1.0f, 1.0f);
+    }
+
+    private void updateAmmoLore(ItemMeta meta, int currentAmmo, String color) {
+        List<String> lore = meta.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+
+        ChatColor gunColor = color.equals("red") ? ChatColor.RED : ChatColor.BLUE;
+
+        // Create new lore
+        List<String> newLore = new ArrayList<>();
+        newLore.add(gunColor + "Right-click to shoot water!");
+        newLore.add(gunColor + "Hold right-click for spray mode!");
+        newLore.add(ChatColor.YELLOW + "Ammo: " + currentAmmo + "/" + maxAmmo);
+        newLore.add(ChatColor.GRAY + "Color: " + gunColor + color.substring(0, 1).toUpperCase() + color.substring(1));
+
+        meta.setLore(newLore);
+    }
+
+    public int getMaxAmmo() {
+        return maxAmmo;
     }
 
 }

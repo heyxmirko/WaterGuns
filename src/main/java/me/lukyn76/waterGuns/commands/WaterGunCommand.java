@@ -89,8 +89,9 @@ public class WaterGunCommand implements CommandExecutor {
 
 
         waterGun.setItemMeta(meta);
+
+        plugin.getAmmoManager().initializeWaterGun(waterGun, color);
         player.getInventory().addItem(waterGun);
-        plugin.getAmmoManager().initializePlayer(player);
 
         player.sendMessage(ChatColor.GREEN + "You received a " + gunName + ChatColor.GREEN + "!");
         player.playSound(player.getLocation(), Sound.ITEM_BUCKET_FILL, 1.0f, 1.2f);
