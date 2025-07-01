@@ -6,7 +6,7 @@
 
     <groupId>me.lukyn76</groupId>
     <artifactId>WaterGuns</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <packaging>jar</packaging>
 
     <name>WaterGuns</name>

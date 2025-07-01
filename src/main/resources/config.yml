@@ -32,8 +32,8 @@ custom-model-data-blue: 1002
 pvp-enabled: true
 
 # Display name for water guns (supports color codes with &)
-water-gun-name-red: "&r&lRed Water Blaster 3000"
-water-gun-name-blue: "&b&lBlue Water Blaster 3000"
+water-gun-name-red: "&4&lRed Water Blaster 3000"
+water-gun-name-blue: "&9&lBlue Water Blaster 3000"
 
 # Sound settings
 sounds:
