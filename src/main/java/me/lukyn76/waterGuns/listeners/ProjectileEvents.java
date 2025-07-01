@@ -10,8 +10,10 @@ import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.Vector;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ProjectileEvents implements Listener {
@@ -28,6 +30,9 @@ public class ProjectileEvents implements Listener {
         if (!(event.getEntity() instanceof Snowball snowball)) return;
 
         if (!snowball.hasMetadata("watergun")) return;
+
+        List<MetadataValue> metadataValues = snowball.getMetadata("watergun");
+        if (metadataValues.isEmpty()) return;
 
         UUID shooterId = (UUID) snowball.getMetadata("watergun").getFirst().value();
         if (shooterId == null) return;
