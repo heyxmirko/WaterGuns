@@ -51,7 +51,7 @@ public class BossBarManager {
 
         double progress = Math.max(0.0, Math.min(1.0, (double) ammo / maxAmmo));
         bossBar.setProgress(progress);
-        bossBar.setTitle("💧 Ammo: " + ammo + "/" + maxAmmo + " 💧");
+        bossBar.setTitle("Ammo: " + ammo + "/" + maxAmmo);
 
         // Change color based on ammo level
         if (progress > 0.6) {
