@@ -24,6 +24,12 @@ public class WaterGunCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Check if sender has permission
+        if (!sender.hasPermission("watergun.give")) {
+            sender.sendMessage(ChatColor.RED + "You don't have permission to use this command!");
+            return true;
+        }
+
         // Check if the command is "/waterguns give <player> <color>"
         if (args.length != 3 || !args[0].equalsIgnoreCase("give")) {
             sender.sendMessage(ChatColor.RED + "Usage: /waterguns give <player> <blue|red>");

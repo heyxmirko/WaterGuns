@@ -35,9 +35,9 @@ public final class WaterGuns extends JavaPlugin {
 
 
         // Register commands
-        getCommand("watergun").setExecutor(new WaterGunCommand(this));
-        getCommand("refill").setExecutor(new RefillCommand(this));
+        getCommand("waterguns").setExecutor(new WaterGunCommand(this));
         getCommand("waterguns").setTabCompleter(new TabComplete());
+        getCommand("refill").setExecutor(new RefillCommand(this));
 
         // Register eventss
         getServer().getPluginManager().registerEvents(new PlayerEvents(this), this);

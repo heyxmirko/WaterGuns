@@ -15,6 +15,11 @@ public class TabComplete implements TabCompleter {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
 
+        // Only provide tab completion if the sender has permission
+        if (!sender.hasPermission("watergun.give")) {
+            return completions; // Return empty list
+        }
+
         if (args.length == 1) {
             // First argument: subcommands
             String input = args[0].toLowerCase();
